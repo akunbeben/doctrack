@@ -1,0 +1,168 @@
+﻿@{
+    ViewBag.Title = "Document Inbox";
+}
+
+<div class="row pt-3">
+    <div class="col-xl-4">
+
+        <!--begin::Portlet-->
+        <div class="kt-portlet kt-portlet--height-fluid">
+            <div class="kt-portlet__head">
+                <div class="kt-portlet__head-label">
+                    <h3 class="kt-portlet__head-title">Inbox</h3>
+                </div>
+                <div class="kt-portlet__head-toolbar">
+                    <div class="kt-portlet__head-group">
+                        <a class="modal-create btn btn-primary btn-bold" href="@Url.Action("NewDocument", "Inbox")">
+                            <i class="flaticon2-add-1"></i> New Document
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="kt-portlet__body">
+
+                <!--begin: Datatable -->
+                <div id="kt_table_1_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <table class="table table-striped table-bordered table-hover no-footer" id="DataTable" role="grid" aria-describedby="DataTable_info">
+                                <thead>
+                                    <tr role="row">
+                                        <th class="sorting" tabindex="0" aria-controls="DataTable" rowspan="1" colspan="1" aria-label="Document ID: activate to sort column ascending">Document ID</th>
+                                        <th class="sorting" tabindex="0" aria-controls="DataTable" rowspan="1" colspan="1" aria-label="Document Type: activate to sort column ascending">Document Type</th>
+                                        <th class="sorting" tabindex="0" aria-controls="DataTable" rowspan="1" colspan="1" aria-label="Vendor: activate to sort column ascending">Vendor</th>
+                                        <th class="sorting" tabindex="0" aria-controls="DataTable" rowspan="1" colspan="1" aria-label="Amount: activate to sort column ascending">Total Amount</th>
+                                        <th class="sorting" tabindex="0" aria-controls="DataTable" rowspan="1" colspan="1" aria-label="Document Status: activate to sort column ascending">Document Status</th>
+                                        <th class="sorting" tabindex="0" aria-controls="DataTable" rowspan="1" colspan="1" aria-label="Flow Status: activate to sort column ascending">Flow Status</th>
+                                        <th class="sorting_disabled" rowspan="1" colspan="1" aria-label="Actions" style="max-width: 100px;">Actions</th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!--end: Datatable -->
+            </div>
+        </div>
+
+        <!--end::Portlet-->
+    </div>
+</div>
+
+@section scripts {
+    <script>
+        $('#btn-submit').attr('disabled', false);
+        var table = $('#DataTable').DataTable({
+            order: [[0, "desc"]],
+            processing: true,
+            serverSide: true,
+            paging: true,
+            ajax: {
+                url: '@Url.Action("GetDocumentLineDatatable", "Inbox")',
+                dataSrc: 'data',
+                type: 'POST'
+            },
+            columns: [
+                { name: 'DocumentSequenceNumber', data: 'DocumentSequenceNumber' },
+                { name: 'DocumentTypeName', data: 'DocumentTypeName' },
+                { name: 'VendorName', data: 'VendorName' },
+                { name: 'Amount', data: 'Amount' },
+                {
+                    name: 'DocumentStatus', data: 'DocumentStatus', render: function (data, type, row) {
+                        var badge;
+
+                        if (row.DocumentStatus == "Initiate") {
+                            badge = 'secondary';
+                        } else if (row.DocumentStatus == "Progress") {
+                            badge = 'primary';
+                        } else {
+                            badge = 'success';
+                        }
+
+                        return `<span class="badge badge-${badge}">${row.DocumentStatus}</span>`;
+                    }
+                },
+                {
+                    name: 'FlowStatus', data: 'FlowStatus', render: function (data, type, row) {
+                        var badge;
+
+                        if (row.FlowStatus == "New") {
+                            badge = 'secondary';
+                        } else if (row.FlowStatus == "SendTo") {
+                            badge = 'warning';
+                        } else if (row.FlowStatus == "Received") {
+                            badge = 'success';
+                        } else {
+                            badge = 'danger';
+                        }
+
+                        return `<span class="badge badge-${badge}">${row.FlowStatus}</span>`;
+                    }
+                },
+                {
+                    data: null, render: function (data, type, row) {
+                        var editButton = `<a href="@Url.Action("EditDocument", "Inbox")/${row.DocumentId}" class="btn btn-sm btn-primary btn-icon"><i class="fa fa-edit"></i></a>&nbsp;`;
+                        var deleteButton = `<button type="button" class="btn btn-sm btn-danger btn-icon" onclick="onClickDelete('@Url.Action("DeleteDocument", "Inbox")' + '/' + ${row.DocumentId})"><i class="fa fa-trash"></i></button>`;
+
+                        if (row.DocumentStatus != "Initiate") {
+                            return null;
+                        } else {
+                            return editButton + deleteButton;
+                        }
+
+                    }
+                }
+            ],
+            columnDefs: [
+                { targets: [6], orderable: false, className: "text-center", style: "max-width: 100px;"},
+            ],
+            initComplete: function () {
+                var input = $('.dataTables_filter input').unbind(),
+                    self = this.api(),
+                    searchButton = $('<button class="btn btn-primary btn-sm rounded-0">')
+                        .html('<i class="kt-menu__link-icon flaticon2-search"></i> ')
+                        .click(function () {
+                            self.search(input.val()).draw();
+                        });
+                $('.dataTables_filter').append(searchButton);
+            }
+        });
+
+        function CallSwal(type, data) {
+            Swal.fire({
+                toast: true,
+                timer: 5000,
+                position: 'top-end',
+                type: type,
+                title: data.Message,
+                showConfirmButton: false
+            });
+        };
+
+        function SubmitData(url) {
+            $('form').submit(function (e) {
+                e.preventDefault();
+            });
+
+            $.ajax({
+                url: url,
+                type: 'POST',
+                dataType: 'json',
+                beforeSend: function () {
+                    $('#btn-submit').attr('disabled', true);
+                },
+                success: function (data) {
+                    $('#btn-submit').attr('disabled', false);
+
+                    if (data.Status === 'Success') {
+                        table.ajax.reload();
+                        CallSwal('success', data);
+                    } else {
+                        CallSwal('error', data);
+                    }
+                }
+            });
+        };
+    </script>
+}

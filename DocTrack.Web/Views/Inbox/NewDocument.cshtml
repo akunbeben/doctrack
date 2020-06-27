@@ -1,0 +1,79 @@
+﻿@model DocTrack.Web.ViewModel.DocumentHeaderVM
+@{
+    ViewBag.Title = "New Document";
+}
+
+<div class="row pt-3">
+    <div class="col-xl-4">
+
+        <div class="kt-portlet kt-portlet--height-fluid">
+            <div class="kt-portlet__head">
+                <div class="kt-portlet__head-label">
+                    <h3 class="kt-portlet__head-title">New Document</h3>
+                </div>
+                <div class="kt-portlet__head-toolbar">
+                    <div class="kt-portlet__head-group">
+                        <a class="btn btn-primary btn-bold" href="@Url.Action("index", "inbox")"><i class="flaticon2-back-1"></i> Back</a>
+                    </div>
+                </div>
+            </div>
+            <div class="kt-portlet__body">
+
+                <!--begin: Datatable -->
+                <div id="kt_table_1_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            @using (Html.BeginForm("CreateDocument", "Inbox", FormMethod.Post))
+                            {
+                                @Html.AntiForgeryToken()
+
+                                @Html.HiddenFor(model => model.DocumentHeader.DocumentId)
+                                <div class="modal-body">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                @Html.LabelFor(model => model.DocumentHeader.DocumentSequenceNumber)
+                                                @Html.TextBoxFor(model => model.DocumentHeader.DocumentSequenceNumber, new { @class = "form-control bg-secondary", @readonly = true })
+                                                @Html.ValidationMessageFor(model => model.DocumentHeader.DocumentSequenceNumber, "", new { @class = "text-danger font-weight-light" })
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                @Html.LabelFor(model => model.DocumentHeader.DocumentTypeId)
+                                                @Html.DropDownListFor(model => model.DocumentHeader.DocumentTypeId, Model.DocumentType, null, new { @class = "form-control", @style = "width: 100%;" })
+                                                @Html.ValidationMessageFor(model => model.DocumentHeader.DocumentTypeId, "", new { @class = "text-danger font-weight-light" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="text-right">
+                                        <button type="submit" class="btn-submit btn btn-primary">Submit</button>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <script>
+        $(document).ready(function () {
+            $.ajax({
+                url: '@Url.Action("GetDocument", "Inbox")',
+                type: 'POST',
+                dataType: 'json',
+                success: function (result) {
+                    if (result.Status == "Success") {
+                        $('#DocumentHeader_DocumentId').val(result.Data.DocumentId);
+                        $('#DocumentHeader_DocumentSequenceNumber').val(result.Data.DocumentSequenceNumber);
+                    }
+                }
+            })
+        });
+
+    </script>
+}

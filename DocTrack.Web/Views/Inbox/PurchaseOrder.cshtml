@@ -1,0 +1,292 @@
+﻿@model DocTrack.Web.ViewModel.DocumentLinePurchaseOrderVM
+@{
+    ViewBag.Title = "Purchase Order";
+}
+
+<div class="row pt-3">
+    <div class="col-xl-4">
+
+        <!--begin::Portlet-->
+        <div class="kt-portlet kt-portlet--height-fluid">
+            <div class="kt-portlet__head">
+                <div class="kt-portlet__head-label">
+                    <h3 class="kt-portlet__head-title">Document: PO - </h3>
+                </div>
+                <div class="kt-portlet__head-toolbar">
+                    <div class="kt-portlet__head-group">
+                    </div>
+                </div>
+            </div>
+            <div class="kt-portlet__body">
+
+                @using (Html.BeginForm("SubmitPurchaseOrder", "Inbox", FormMethod.Post))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                    @Html.HiddenFor(model => model.PurchaseOrderView.DocumentLineId)
+                    @Html.HiddenFor(model => model.PurchaseOrderView.DocumentId)
+                    @Html.HiddenFor(model => model.PurchaseOrderView.DocumentTypeId)
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.PurchaseOrderView.DocumentSequenceNumber)
+                                @Html.TextBoxFor(model => model.PurchaseOrderView.DocumentSequenceNumber, new { @class = "form-control form-control-sm form-control form-control-sm-sm bg-secondary", @readonly = true })
+                                @Html.ValidationMessageFor(model => model.PurchaseOrderView.DocumentSequenceNumber, "", new { @class = "text-danger font-weight-light" })
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.PurchaseOrderView.PurchaseOrderTypeId)
+                                @Html.DropDownListFor(model => model.PurchaseOrderView.PurchaseOrderTypeId, Model.PurchaseOrderType, null, new { @class = "form-control form-control-sm", @style = "width: 100%;" })
+                                @Html.ValidationMessageFor(model => model.PurchaseOrderView.PurchaseOrderTypeId, "", new { @class = "text-danger font-weight-light" })
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>Document Type</label>
+                                <input type="text" value="PO" disabled class="form-control form-control-sm bg-secondary" />
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.PurchaseOrderView.CompanyId)
+                                @Html.DropDownListFor(model => model.PurchaseOrderView.CompanyId, Model.Companies, null, new { @class = "form-control form-control-sm", @style = "width: 100%;" })
+                                @Html.ValidationMessageFor(model => model.PurchaseOrderView.CompanyId, "", new { @class = "text-danger font-weight-light" })
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.PurchaseOrderView.ReceivedAtMbp)
+                                @Html.TextBoxFor(model => model.PurchaseOrderView.ReceivedAtMbp, new { @class = "form-control form-control-sm", type = "date" })
+                                @Html.ValidationMessageFor(model => model.PurchaseOrderView.ReceivedAtMbp, "", new { @class = "text-danger font-weight-light" })
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.PurchaseOrderView.InvoiceDate)
+                                @Html.TextBoxFor(model => model.PurchaseOrderView.InvoiceDate, new { @class = "form-control form-control-sm", type = "date" })
+                                @Html.ValidationMessageFor(model => model.PurchaseOrderView.InvoiceDate, "", new { @class = "text-danger font-weight-light" })
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.PurchaseOrderView.VendorId)
+                                @Html.DropDownListFor(model => model.PurchaseOrderView.VendorId, Model.Vendors, null, new { @class = "form-control form-control-sm", @style = "width: 100%;" })
+                                @Html.ValidationMessageFor(model => model.PurchaseOrderView.VendorId, "", new { @class = "text-danger font-weight-light" })
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.PurchaseOrderView.TransactionDescription)
+                                @Html.TextAreaFor(model => model.PurchaseOrderView.TransactionDescription, new { @class = "form-control form-control-sm" })
+                                @Html.ValidationMessageFor(model => model.PurchaseOrderView.TransactionDescription, "", new { @class = "text-danger font-weight-light" })
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.PurchaseOrderView.PoId)
+                                @Html.TextAreaFor(model => model.PurchaseOrderView.PoId, new { @class = "form-control form-control-sm" })
+                                @Html.ValidationMessageFor(model => model.PurchaseOrderView.PoId, "", new { @class = "text-danger font-weight-light" })
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-9">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.PurchaseOrderView.TaxNumber)
+                                @Html.TextBoxFor(model => model.PurchaseOrderView.TaxNumber, new { @class = "form-control form-control-sm" })
+                                @Html.ValidationMessageFor(model => model.PurchaseOrderView.TaxNumber, "", new { @class = "text-danger font-weight-light" })
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.PurchaseOrderView.DoCr)
+                                @Html.TextBoxFor(model => model.PurchaseOrderView.DoCr, new { @class = "form-control form-control-sm" })
+                                @Html.ValidationMessageFor(model => model.PurchaseOrderView.DoCr, "", new { @class = "text-danger font-weight-light" })
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.PurchaseOrderView.VesselId)
+                                @Html.TextBoxFor(model => model.PurchaseOrderView.VesselId, new { @class = "form-control form-control-sm" })
+                                @Html.ValidationMessageFor(model => model.PurchaseOrderView.VesselId, "", new { @class = "text-danger font-weight-light" })
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.PurchaseOrderView.DocumentNumber)
+                                @Html.TextBoxFor(model => model.PurchaseOrderView.DocumentNumber, new { @class = "form-control form-control-sm" })
+                                @Html.ValidationMessageFor(model => model.PurchaseOrderView.DocumentNumber, "", new { @class = "text-danger font-weight-light" })
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.PurchaseOrderView.InvoiceAmount)
+                                @Html.TextBoxFor(model => model.PurchaseOrderView.InvoiceAmount, new { @class = "form-control form-control-sm" })
+                                @Html.ValidationMessageFor(model => model.PurchaseOrderView.InvoiceAmount, "", new { @class = "text-danger font-weight-light" })
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.PurchaseOrderView.TaxAmount)
+                                @Html.TextBoxFor(model => model.PurchaseOrderView.TaxAmount, new { @class = "form-control form-control-sm" })
+                                @Html.ValidationMessageFor(model => model.PurchaseOrderView.TaxAmount, "", new { @class = "text-danger font-weight-light" })
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.PurchaseOrderView.AmountToRecord)
+                                @Html.TextBoxFor(model => model.PurchaseOrderView.AmountToRecord, new { @class = "form-control form-control-sm" })
+                                @Html.ValidationMessageFor(model => model.PurchaseOrderView.AmountToRecord, "", new { @class = "text-danger font-weight-light" })
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.PurchaseOrderView.DpBeforeMade)
+                                @Html.TextBoxFor(model => model.PurchaseOrderView.DpBeforeMade, new { @class = "form-control form-control-sm" })
+                                @Html.ValidationMessageFor(model => model.PurchaseOrderView.DpBeforeMade, "", new { @class = "text-danger font-weight-light" })
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row align-items-center">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.PurchaseOrderView.Other)
+                                @Html.TextBoxFor(model => model.PurchaseOrderView.Other, new { @class = "form-control form-control-sm" })
+                                @Html.ValidationMessageFor(model => model.PurchaseOrderView.Other, "", new { @class = "text-danger font-weight-light" })
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-check">
+                                @Html.CheckBoxFor(model => model.PurchaseOrderView.OriginalInvoice, new { @class = "form-check-input" })
+                                @Html.LabelFor(model => model.PurchaseOrderView.OriginalInvoice, new { @class = "form-check-label" })
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row justify-content-end">
+                        <div class="col-md-6 text-right">
+                            <button type="button" id="btn-save" class="btn btn-primary" onclick="SaveData()">Save</button>
+                            <button type="submit" id="btn-submit" class="btn btn-primary">Submit</button>
+                            <button type="button" id="btn-cancel" class="btn btn-metal">Cancel</button>
+                            <button type="button" id="btn-close" class="btn btn-metal">Close</button>
+                        </div>
+                    </div>
+                }
+
+            </div>
+        </div>
+
+        <!--end::Portlet-->
+    </div>
+</div>
+
+@section scripts {
+    <script>
+
+        $.ajax({
+            url: '@ViewBag.DocumentUrl',
+            type: 'POST',
+            dataType: 'json',
+            success: function (result) {
+                if (result.Status == "Success") {
+                    $('#btn-close').hide();
+                    if (result.Data.DocumentLineId == 0) {
+                        $('#btn-submit').attr('disabled', true);
+                        
+                    } else {
+                        $('#btn-submit').attr('disabled', false);
+                    }
+
+                    $('.kt-portlet__head-title').html('Document: PO - ' + result.Data.DocumentSequenceNumber);
+                    $('#PurchaseOrderView_DocumentLineId').val(result.Data.DocumentLineId);
+                    $('#PurchaseOrderView_DocumentId').val(result.Data.DocumentId);
+                    $('#PurchaseOrderView_DocumentSequenceNumber').val(result.Data.DocumentSequenceNumber);
+                    $('#PurchaseOrderView_PurchaseOrderTypeId').val(result.Data.PurchaseOrderTypeId);
+                    $('#PurchaseOrderView_DocumentTypeId').val(result.Data.DocumentTypeId);
+                    $('#PurchaseOrderView_CompanyId').val(result.Data.CompanyId);
+                    $('#PurchaseOrderView_VendorId').val(result.Data.VendorId);
+                    $('#PurchaseOrderView_TransactionDescription').val(result.Data.TransactionDescription);
+                    $('#PurchaseOrderView_PoId').val(result.Data.PoId);
+                    $('#PurchaseOrderView_TaxNumber').val(result.Data.TaxNumber);
+                    $('#PurchaseOrderView_DoCr').val(result.Data.DoCr);
+                    $('#PurchaseOrderView_VesselId').val(result.Data.VesselId);
+                    $('#PurchaseOrderView_DocumentNumber').val(result.Data.DocumentNumber);
+                    $('#PurchaseOrderView_InvoiceAmount').val(result.Data.InvoiceAmount);
+                    $('#PurchaseOrderView_TaxAmount').val(result.Data.TaxAmount);
+                    $('#PurchaseOrderView_AmountToRecord').val(result.Data.AmountToRecord);
+                    $('#PurchaseOrderView_DpBeforeMade').val(result.Data.DpBeforeMade);
+                    $('#PurchaseOrderView_Other').val(result.Data.Other);
+                    $('#PurchaseOrderView_OriginalInvoice').val(result.Data.OriginalInvoice);
+                } else {
+
+                }
+            }
+        });
+
+        $('#btn-submit').button().click(function () {
+            $('form').unbind('submit').submit()
+        });
+
+        function CallSwal(type, data) {
+            Swal.fire({
+                toast: true,
+                timer: 5000,
+                position: 'top-end',
+                type: type,
+                title: data.Message,
+                showConfirmButton: false
+            });
+        };
+
+        function SaveData() {
+            let data = $('form').serialize(),
+                url = '@Url.Action("SavePurchaseOrder", "Inbox")';
+
+            $('form').submit(function (e) {
+                e.preventDefault();
+            });
+
+            if ($('form').valid()) {
+                $.ajax({
+                    url: url,
+                    type: 'POST',
+                    dataType: 'json',
+                    data: data,
+                    beforeSend: function () {
+                        $('#btn-save').attr('disabled', true);
+                        $('#btn-submit').attr('disabled', true);
+                    },
+                    success: function (data) {
+                        $('#btn-submit').attr('disabled', false);
+                        $('#btn-save').attr('disabled', false);
+                        $('#btn-cancel').hide();
+                        $('#btn-close').show();
+
+                        if (data.Status === 'Success') {
+                            CallSwal('success', data);
+                        } else {
+                            CallSwal('error', data);
+                        }
+                    }
+                });
+            }
+        };
+
+    </script>
+}

@@ -1,0 +1,264 @@
+﻿@model DocTrack.Web.ViewModel.DocumentLineSettlementVM
+@{
+    ViewBag.Title = "Settlement";
+}
+
+<div class="row pt-3">
+    <div class="col-xl-4">
+
+        <!--begin::Portlet-->
+        <div class="kt-portlet kt-portlet--height-fluid">
+            <div class="kt-portlet__head">
+                <div class="kt-portlet__head-label">
+                    <h3 class="kt-portlet__head-title">Document: SETTLEMENT - </h3>
+                </div>
+                <div class="kt-portlet__head-toolbar">
+                    <div class="kt-portlet__head-group">
+                    </div>
+                </div>
+            </div>
+            <div class="kt-portlet__body">
+
+                @using (Html.BeginForm("SubmitSettlement", "Inbox", FormMethod.Post))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                    @Html.HiddenFor(model => model.SettlementView.DocumentLineId)
+                    @Html.HiddenFor(model => model.SettlementView.DocumentId)
+                    @Html.HiddenFor(model => model.SettlementView.DocumentTypeId)
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.SettlementView.DocumentSequenceNumber)
+                                @Html.TextBoxFor(model => model.SettlementView.DocumentSequenceNumber, new { @class = "form-control form-control-sm bg-secondary", @readonly = true })
+                                @Html.ValidationMessageFor(model => model.SettlementView.DocumentSequenceNumber, "", new { @class = "text-danger font-weight-light" })
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>Document Type</label>
+                                <input type="text" value="SETTLEMENT" disabled class="form-control form-control-sm bg-secondary" />
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.SettlementView.CompanyId)
+                                @Html.DropDownListFor(model => model.SettlementView.CompanyId, Model.Companies, null, new { @class = "form-control form-control-sm", @style = "width: 100%;" })
+                                @Html.ValidationMessageFor(model => model.SettlementView.CompanyId, "", new { @class = "text-danger font-weight-light" })
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.SettlementView.DepartmentId)
+                                @Html.DropDownListFor(model => model.SettlementView.DepartmentId, Model.Departments, null, new { @class = "form-control form-control-sm", @style = "width: 100%;" })
+                                @Html.ValidationMessageFor(model => model.SettlementView.DepartmentId, "", new { @class = "text-danger font-weight-light" })
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.SettlementView.ReceivedAtMbp)
+                                @Html.TextBoxFor(model => model.SettlementView.ReceivedAtMbp, new { @class = "form-control form-control-sm", type = "date" })
+                                @Html.ValidationMessageFor(model => model.SettlementView.ReceivedAtMbp, "", new { @class = "text-danger font-weight-light" })
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.SettlementView.DueDate)
+                                @Html.TextBoxFor(model => model.SettlementView.DueDate, new { @class = "form-control form-control-sm", type = "date" })
+                                @Html.ValidationMessageFor(model => model.SettlementView.DueDate, "", new { @class = "text-danger font-weight-light" })
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.SettlementView.VendorId)
+                                @Html.DropDownListFor(model => model.SettlementView.VendorId, Model.Vendors, null, new { @class = "form-control form-control-sm", @style = "width: 100%;" })
+                                @Html.ValidationMessageFor(model => model.SettlementView.VendorId, "", new { @class = "text-danger font-weight-light" })
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.SettlementView.TransactionDescription)
+                                @Html.TextAreaFor(model => model.SettlementView.TransactionDescription, new { @class = "form-control form-control-sm" })
+                                @Html.ValidationMessageFor(model => model.SettlementView.TransactionDescription, "", new { @class = "text-danger font-weight-light" })
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-9">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.SettlementView.TaxNumber)
+                                @Html.TextBoxFor(model => model.SettlementView.TaxNumber, new { @class = "form-control form-control-sm" })
+                                @Html.ValidationMessageFor(model => model.SettlementView.TaxNumber, "", new { @class = "text-danger font-weight-light" })
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.SettlementView.DocumentDate)
+                                @Html.TextBoxFor(model => model.SettlementView.DocumentDate, new { @class = "form-control form-control-sm", type = "date" })
+                                @Html.ValidationMessageFor(model => model.SettlementView.DocumentDate, "", new { @class = "text-danger font-weight-light" })
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.SettlementView.DocumentNumber)
+                                @Html.TextBoxFor(model => model.SettlementView.DocumentNumber, new { @class = "form-control form-control-sm" })
+                                @Html.ValidationMessageFor(model => model.SettlementView.DocumentNumber, "", new { @class = "text-danger font-weight-light" })
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.SettlementView.Amount)
+                                @Html.TextBoxFor(model => model.SettlementView.Amount, new { @class = "form-control form-control-sm" })
+                                @Html.ValidationMessageFor(model => model.SettlementView.Amount, "", new { @class = "text-danger font-weight-light" })
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.SettlementView.TaxAmount)
+                                @Html.TextBoxFor(model => model.SettlementView.TaxAmount, new { @class = "form-control form-control-sm" })
+                                @Html.ValidationMessageFor(model => model.SettlementView.TaxAmount, "", new { @class = "text-danger font-weight-light" })
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.SettlementView.TotalAmount)
+                                @Html.TextBoxFor(model => model.SettlementView.TotalAmount, new { @class = "form-control form-control-sm" })
+                                @Html.ValidationMessageFor(model => model.SettlementView.TotalAmount, "", new { @class = "text-danger font-weight-light" })
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.SettlementView.DocumentStatus)
+                                @Html.DropDownListFor(model => model.SettlementView.DocumentStatus, Model.DocumentStatus, null, new { @class = "form-control form-control-sm", @style = "width: 100%;" })
+                                @Html.ValidationMessageFor(model => model.SettlementView.DocumentStatus, "", new { @class = "text-danger font-weight-light" })
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.SettlementView.DocumentReference)
+                                @Html.DropDownListFor(model => model.SettlementView.DocumentReference, Model.DocumentReference, null, new { @class = "form-control form-control-sm", @style = "width: 100%;" })
+                                @Html.ValidationMessageFor(model => model.SettlementView.DocumentReference, "", new { @class = "text-danger font-weight-light" })
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row justify-content-end">
+                        <div class="col-md-6 text-right">
+                            <button type="button" id="btn-save" class="btn btn-primary" onclick="SaveData()">Save</button>
+                            <button type="submit" id="btn-submit" class="btn btn-primary">Submit</button>
+                            <button type="button" id="btn-cancel" class="btn btn-metal">Cancel</button>
+                            <button type="button" id="btn-close" class="btn btn-metal">Close</button>
+                        </div>
+                    </div>
+                }
+
+            </div>
+        </div>
+
+        <!--end::Portlet-->
+    </div>
+</div>
+
+@section scripts {
+<script>
+        $.ajax({
+            url: '@ViewBag.DocumentUrl',
+            type: 'POST',
+            dataType: 'json',
+            success: function (result) {
+                if (result.Status == "Success") {
+                    $('#btn-close').hide();
+                    if (result.Data.DocumentLineId == 0) {
+                        $('#btn-submit').attr('disabled', true);
+
+                    } else {
+                        $('#btn-submit').attr('disabled', false);
+                    }
+
+                    $('.kt-portlet__head-title').html('Document: MEMO - ' + result.Data.DocumentSequenceNumber);
+                    $('#SettlementView_DocumentLineId').val(result.Data.DocumentLineId);
+                    $('#SettlementView_DocumentId').val(result.Data.DocumentId);
+                    $('#SettlementView_DocumentSequenceNumber').val(result.Data.DocumentSequenceNumber);
+                    $('#SettlementView_DocumentTypeId').val(result.Data.DocumentTypeId);
+                    $('#SettlementView_DepartmentId').val(result.Data.DepartmentId);
+                    $('#SettlementView_CompanyId').val(result.Data.CompanyId);
+                    $('#SettlementView_VendorId').val(result.Data.VendorId);
+                    $('#SettlementView_TransactionDescription').val(result.Data.TransactionDescription);
+                    $('#SettlementView_TaxNumber').val(result.Data.TaxNumber);
+                    $('#SettlementView_DocumentNumber').val(result.Data.DocumentNumber);
+                    $('#SettlementView_Amount').val(result.Data.Amount);
+                    $('#SettlementView_TaxAmount').val(result.Data.TaxAmount);
+                    $('#SettlementView_TotalAmount').val(result.Data.TotalAmount);
+                    $('#SettlementView_DocumentStatus').val(result.Data.DocumentStatus);
+                    $('#SettlementView_DocumentReference').val(result.Data.DocumentReference);
+                } else {
+
+                }
+            }
+        });
+
+        $('#btn-submit').button().click(function () {
+            $('form').unbind('submit').submit()
+        });
+
+        function CallSwal(type, data) {
+            Swal.fire({
+                toast: true,
+                timer: 5000,
+                position: 'top-end',
+                type: type,
+                title: data.Message,
+                showConfirmButton: false
+            });
+        };
+
+        function SaveData() {
+            let data = $('form').serialize(),
+                url = '@Url.Action("SaveSettlement", "Inbox")';
+
+            $('form').submit(function (e) {
+                e.preventDefault();
+            });
+
+            if ($('form').valid()) {
+                $.ajax({
+                    url: url,
+                    type: 'POST',
+                    dataType: 'json',
+                    data: data,
+                    beforeSend: function () {
+                        $('#btn-save').attr('disabled', true);
+                        $('#btn-submit').attr('disabled', true);
+                    },
+                    success: function (data) {
+                        $('#btn-submit').attr('disabled', false);
+                        $('#btn-save').attr('disabled', false);
+                        $('#btn-cancel').hide();
+                        $('#btn-close').show();
+
+                        if (data.Status === 'Success') {
+                            CallSwal('success', data);
+                        } else {
+                            CallSwal('error', data);
+                        }
+                    }
+                });
+            }
+        };
+
+</script>
+}

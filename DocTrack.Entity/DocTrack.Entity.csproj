@@ -1,0 +1,67 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{B5A12DA4-BD5C-401F-83C4-EEDFABC76900}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>DocTrack.Entity</RootNamespace>
+    <AssemblyName>DocTrack.Entity</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Dto\DocumentTypeDto.cs" />
+    <Compile Include="Dto\PersonInChargeDto.cs" />
+    <Compile Include="Models\DocumentLineCashAdvance.cs" />
+    <Compile Include="Models\DocumentLineSettlement.cs" />
+    <Compile Include="Models\UtilityDocument.cs" />
+    <Compile Include="Dto\VendorDto.cs" />
+    <Compile Include="Models\BaseModel.cs" />
+    <Compile Include="Models\Company.cs" />
+    <Compile Include="Models\Department.cs" />
+    <Compile Include="Models\DocumentHeader.cs" />
+    <Compile Include="Models\DocumentLine.cs" />
+    <Compile Include="Models\DocumentLineMemo.cs" />
+    <Compile Include="Models\DocumentLinePurchaseOrder.cs" />
+    <Compile Include="Models\DocumentType.cs" />
+    <Compile Include="Models\LookupValue.cs" />
+    <Compile Include="Models\PersonInCharge.cs" />
+    <Compile Include="Models\SequenceNumber.cs" />
+    <Compile Include="Models\Users.cs" />
+    <Compile Include="Models\Vendor.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

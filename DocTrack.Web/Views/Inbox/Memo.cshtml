@@ -1,0 +1,256 @@
+﻿@model DocTrack.Web.ViewModel.DocumentLineMemoVM
+@{
+    ViewBag.Title = "Memo";
+}
+
+<div class="row pt-3">
+    <div class="col-xl-4">
+
+        <!--begin::Portlet-->
+        <div class="kt-portlet kt-portlet--height-fluid">
+            <div class="kt-portlet__head">
+                <div class="kt-portlet__head-label">
+                    <h3 class="kt-portlet__head-title">Document: MEMO - </h3>
+                </div>
+                <div class="kt-portlet__head-toolbar">
+                    <div class="kt-portlet__head-group">
+                    </div>
+                </div>
+            </div>
+            <div class="kt-portlet__body">
+
+                @using (Html.BeginForm("SubmitMemo", "Inbox", FormMethod.Post))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                    @Html.HiddenFor(model => model.MemoView.DocumentLineId)
+                    @Html.HiddenFor(model => model.MemoView.DocumentId)
+                    @Html.HiddenFor(model => model.MemoView.DocumentTypeId)
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.MemoView.DocumentSequenceNumber)
+                                @Html.TextBoxFor(model => model.MemoView.DocumentSequenceNumber, new { @class = "form-control form-control-sm bg-secondary", @readonly = true })
+                                @Html.ValidationMessageFor(model => model.MemoView.DocumentSequenceNumber, "", new { @class = "text-danger font-weight-light" })
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>Document Type</label>
+                                <input type="text" value="MEMO" disabled class="form-control form-control-sm bg-secondary" />
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.MemoView.CompanyId)
+                                @Html.DropDownListFor(model => model.MemoView.CompanyId, Model.Companies, null, new { @class = "form-control form-control-sm", @style = "width: 100%;" })
+                                @Html.ValidationMessageFor(model => model.MemoView.CompanyId, "", new { @class = "text-danger font-weight-light" })
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.MemoView.DepartmentId)
+                                @Html.DropDownListFor(model => model.MemoView.DepartmentId, Model.Departments, null, new { @class = "form-control form-control-sm", @style = "width: 100%;" })
+                                @Html.ValidationMessageFor(model => model.MemoView.DepartmentId, "", new { @class = "text-danger font-weight-light" })
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.MemoView.ReceivedAtMbp)
+                                @Html.TextBoxFor(model => model.MemoView.ReceivedAtMbp, new { @class = "form-control form-control-sm", type = "date" })
+                                @Html.ValidationMessageFor(model => model.MemoView.ReceivedAtMbp, "", new { @class = "text-danger font-weight-light" })
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.MemoView.DueDate)
+                                @Html.TextBoxFor(model => model.MemoView.DueDate, new { @class = "form-control form-control-sm", type = "date" })
+                                @Html.ValidationMessageFor(model => model.MemoView.DueDate, "", new { @class = "text-danger font-weight-light" })
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.MemoView.VendorId)
+                                @Html.DropDownListFor(model => model.MemoView.VendorId, Model.Vendors, null, new { @class = "form-control form-control-sm", @style = "width: 100%;" })
+                                @Html.ValidationMessageFor(model => model.MemoView.VendorId, "", new { @class = "text-danger font-weight-light" })
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.MemoView.TransactionDescription)
+                                @Html.TextAreaFor(model => model.MemoView.TransactionDescription, new { @class = "form-control form-control-sm" })
+                                @Html.ValidationMessageFor(model => model.MemoView.TransactionDescription, "", new { @class = "text-danger font-weight-light" })
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-9">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.MemoView.TaxNumber)
+                                @Html.TextBoxFor(model => model.MemoView.TaxNumber, new { @class = "form-control form-control-sm" })
+                                @Html.ValidationMessageFor(model => model.MemoView.TaxNumber, "", new { @class = "text-danger font-weight-light" })
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.MemoView.DocumentDate)
+                                @Html.TextBoxFor(model => model.MemoView.DocumentDate, new { @class = "form-control form-control-sm", type = "date" })
+                                @Html.ValidationMessageFor(model => model.MemoView.DocumentDate, "", new { @class = "text-danger font-weight-light" })
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.MemoView.DocumentNumber)
+                                @Html.TextBoxFor(model => model.MemoView.DocumentNumber, new { @class = "form-control form-control-sm" })
+                                @Html.ValidationMessageFor(model => model.MemoView.DocumentNumber, "", new { @class = "text-danger font-weight-light" })
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.MemoView.Amount)
+                                @Html.TextBoxFor(model => model.MemoView.Amount, new { @class = "form-control form-control-sm" })
+                                @Html.ValidationMessageFor(model => model.MemoView.Amount, "", new { @class = "text-danger font-weight-light" })
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.MemoView.TaxAmount)
+                                @Html.TextBoxFor(model => model.MemoView.TaxAmount, new { @class = "form-control form-control-sm" })
+                                @Html.ValidationMessageFor(model => model.MemoView.TaxAmount, "", new { @class = "text-danger font-weight-light" })
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.MemoView.TotalAmount)
+                                @Html.TextBoxFor(model => model.MemoView.TotalAmount, new { @class = "form-control form-control-sm" })
+                                @Html.ValidationMessageFor(model => model.MemoView.TotalAmount, "", new { @class = "text-danger font-weight-light" })
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.MemoView.DocumentStatus)
+                                @Html.DropDownListFor(model => model.MemoView.DocumentStatus, Model.DocumentStatus, null, new { @class = "form-control form-control-sm", @style = "width: 100%;" })
+                                @Html.ValidationMessageFor(model => model.MemoView.DocumentStatus, "", new { @class = "text-danger font-weight-light" })
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row justify-content-end">
+                        <div class="col-md-6 text-right">
+                            <button type="button" id="btn-save" class="btn btn-primary" onclick="SaveData()">Save</button>
+                            <button type="submit" id="btn-submit" class="btn btn-primary">Submit</button>
+                            <button type="button" id="btn-cancel" class="btn btn-metal">Cancel</button>
+                            <button type="button" id="btn-close" class="btn btn-metal">Close</button>
+                        </div>
+                    </div>
+                }
+
+            </div>
+        </div>
+
+        <!--end::Portlet-->
+    </div>
+</div>
+
+@section scripts {
+    <script>
+        $.ajax({
+            url: '@ViewBag.DocumentUrl',
+            type: 'POST',
+            dataType: 'json',
+            success: function (result) {
+                if (result.Status == "Success") {
+                    $('#btn-close').hide();
+                    if (result.Data.DocumentLineId == 0) {
+                        $('#btn-submit').attr('disabled', true);
+
+                    } else {
+                        $('#btn-submit').attr('disabled', false);
+                    }
+
+                    $('.kt-portlet__head-title').html('Document: MEMO - ' + result.Data.DocumentSequenceNumber);
+                    $('#MemoView_DocumentLineId').val(result.Data.DocumentLineId);
+                    $('#MemoView_DocumentId').val(result.Data.DocumentId);
+                    $('#MemoView_DocumentSequenceNumber').val(result.Data.DocumentSequenceNumber);
+                    $('#MemoView_DocumentTypeId').val(result.Data.DocumentTypeId);
+                    $('#MemoView_DepartmentId').val(result.Data.DepartmentId);
+                    $('#MemoView_CompanyId').val(result.Data.CompanyId);
+                    $('#MemoView_VendorId').val(result.Data.VendorId);
+                    $('#MemoView_TransactionDescription').val(result.Data.TransactionDescription);
+                    $('#MemoView_TaxNumber').val(result.Data.TaxNumber);
+                    $('#MemoView_DocumentNumber').val(result.Data.DocumentNumber);
+                    $('#MemoView_Amount').val(result.Data.Amount);
+                    $('#MemoView_TaxAmount').val(result.Data.TaxAmount);
+                    $('#MemoView_TotalAmount').val(result.Data.TotalAmount);
+                    $('#MemoView_DocumentStatus').val(result.Data.DocumentStatus);
+                } else {
+
+                }
+            }
+        });
+
+        $('#btn-submit').button().click(function () {
+            $('form').unbind('submit').submit()
+        });
+
+        function CallSwal(type, data) {
+            Swal.fire({
+                toast: true,
+                timer: 5000,
+                position: 'top-end',
+                type: type,
+                title: data.Message,
+                showConfirmButton: false
+            });
+        };
+
+        function SaveData() {
+            let data = $('form').serialize(),
+                url = '@Url.Action("SaveMemo", "Inbox")';
+
+            $('form').submit(function (e) {
+                e.preventDefault();
+            });
+
+            if ($('form').valid()) {
+                $.ajax({
+                    url: url,
+                    type: 'POST',
+                    dataType: 'json',
+                    data: data,
+                    beforeSend: function () {
+                        $('#btn-save').attr('disabled', true);
+                        $('#btn-submit').attr('disabled', true);
+                    },
+                    success: function (data) {
+                        $('#btn-submit').attr('disabled', false);
+                        $('#btn-save').attr('disabled', false);
+                        $('#btn-cancel').hide();
+                        $('#btn-close').show();
+
+                        if (data.Status === 'Success') {
+                            CallSwal('success', data);
+                        } else {
+                            CallSwal('error', data);
+                        }
+                    }
+                });
+            }
+        };
+
+    </script>
+}
