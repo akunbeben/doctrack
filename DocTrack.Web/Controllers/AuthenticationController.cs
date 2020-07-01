@@ -2,7 +2,15 @@
 using DocTrack.Web.Service;
 using System.IO;
 using System.Net;
+using System;
+using System.Net.Http;
 using System.Web.Mvc;
+using DocTrack.Web.Models;
+using Newtonsoft.Json;
+using System.Net.Http.Headers;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
 
 namespace DocTrack.Web.Controllers
 {
@@ -10,6 +18,7 @@ namespace DocTrack.Web.Controllers
     public class AuthenticationController : Controller
     {
         private readonly IUserRepository _userRepository;
+        private readonly string baseUrl = "http://localhost:8080/bonita/";
 
         public AuthenticationController(IUserRepository userRepository)
         {
@@ -35,22 +44,32 @@ namespace DocTrack.Web.Controllers
 
             var userdata = _userRepository.GetUserByUsername(username);
 
+            string[] userObject = new string[2] { username, password };
+
             if (userdata == null)
             {
-                return View();
+                return RedirectToAction("login", "authentication");
             }
 
-            var urlApi = "http://localhost:8080/bonita/loginservice";
-            object data = new { username, password };
+            using (var client = new HttpClient())
+            {
+                string jsonContent = JsonConvert.SerializeObject(userObject);
 
-            WebRequest http = HttpWebRequest.Create(urlApi);
-            http.Method = "POST";
-            http.ContentType = "application/x-www-form-urlencoded";
-            var streamWriter = new StreamWriter(http.GetRequestStream());
-            streamWriter.Write(data);
-            streamWriter.Close();
+                string postUrl = string.Format(baseUrl + "loginservice?username={0}&password={1}&redirect=false", userObject);
 
-            http.GetResponse();
+                using (HttpContent content = new StringContent(jsonContent))
+                {
+                    content.Headers.ContentType = new MediaTypeHeaderValue("application/x-www-form-urlencoded");
+                    HttpResponseMessage response = client.PostAsync(postUrl, content).Result;
+
+                    if (!response.IsSuccessStatusCode)
+                    {
+                        return RedirectToAction("login", "authentication");
+                    };
+
+                    var cookie = response.Headers.FirstOrDefault(header => header.Key == "Set-Cookie").Value;
+                }
+            }
 
             Session["dht-username"] = userdata.Username;
 
